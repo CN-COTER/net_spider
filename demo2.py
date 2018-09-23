@@ -28,7 +28,7 @@
 #
 # proxy_handler = ProxyHandler({
 #     'http': 'http://127.0.0.1:9743',
-#     'https': 'https://127.0.0.1:9743'
+#     # 'https': 'https://127.0.0.1:9743'     只需要设置一个代理地址
 # })
 # opener = build_opener(proxy_handler)
 # try:
@@ -36,23 +36,61 @@
 #     print(response.read().decode('utf-8'))
 # except URLError as e:
 #     print(e.reason)
-#
+
 
 #实例3：Cookies
 #声明一个CookJar,利用HTTPCookieProcessor构建一个Handler
-import http.cookiejar
-import urllib.request
-cookie = http.cookiejar.CookieJar()
-handler = urllib.request.HTTPCookieProcessor(cookie)
-opener = urllib.request.build_opener(handler)
-response = opener.open('http://baidu.com')
-cookie.save(ignore_discard=True, ignore_expires=True)
-# print(cookie)
-# for item in cookie:
-#     print(item.name+'='+item.value)
+# import http.cookiejar
+# import urllib.request
+# filename = 'cookies.txt'
+# # cookie = http.cookiejar.CookieJar()
+# # cookie = http.cookiejar.MozillaCookieJar(filename)      #MozillaCookieJar用于处理Cookies和文件相关的事件
+# cookie = http.cookiejar.LWPCookieJar(filename)
+# handler = urllib.request.HTTPCookieProcessor(cookie)
+# opener = urllib.request.build_opener(handler)
+# response = opener.open('https://www.baidu.com')
+# cookie.save(ignore_discard=True, ignore_expires=True)
+
+#使用本地的cookies文件（必须是LWPCookieJar格式的Cookies）
+# cookie = http.cookiejar.LWPCookieJar()
+# cookie.load('cookies.txt', ignore_discard=True, ignore_expires=True)
+# handler = urllib.request.HTTPCookieProcessor(cookie)
+# opener = urllib.request.build_opener(handler)
+# response = opener.open('https://www.baidu.com')
+# print(response.read().decode('utf8'))
 
 
-#实例4：
+
+#实例4：处理异常:URLError,HTTPError(子类)[code,reason,headers]
+# from urllib import request, error
+# try:
+#     response = request.urlopen(' https://cuiqingcai.com/index.htm', timeout=0.1)
+# except error.HTTPError as e:
+#     print(e.reason, e.code, e.headers)
+
+
+#先输出子异常再输出父异常
+
+# from urllib import request, error
+# try:
+#     response = request.urlopen(' https://cuiqingcai.com/index.htm', timeout=0.1)
+# except error.HTTPError as e:
+#     print(e.reason, e.code, e.headers)
+# except error.URLError as e:
+#     print(e.reason)
+# else:
+#     print('Request Successfully')
+
+#异常reason返回的是一个对象
+import socket
+from urllib import request, error
+try:
+    response = request.urlopen(' https://www.baidu.com', timeout=0.01)
+except error.URLError as e:
+    print(type(e.reason))
+    if isinstance(e.reason, socket.timeout):
+        print('TIME OUT')
+
 
 
 

@@ -16,9 +16,9 @@ import urllib.error
 
 
 # 模拟post请求加入参数，进行表单提交。
-data = bytes(urllib.parse.urlencode({'world': 'hello'}), encoding='utf8')      #字节流编码格式需要用bytes()方法来转化
-response = urllib.request.urlopen('http://httpbin.org/post', data=data)
-print(response.read())
+# data = bytes(urllib.parse.urlencode({'world': 'hello'}), encoding='utf8')      #字节流编码格式需要用bytes()方法来转化
+# response = urllib.request.urlopen('http://httpbin.org/post', data=data)
+# print(response.read())
 
 
 # timeout参数的使用
@@ -30,17 +30,17 @@ print(response.read())
 
 
 
-print('000000000000000000000000000000000000000000000000000000000000')
-#Request    通过创建request对象并且对其进行设置
-# request = urllib.request.Request('http://python.org')
+# import urllib.request
+# print('000000000000000000000000000000000000000000000000000000000000')
+#Request    通过创建request对象并且对其进行设置,第二个参数data必须传字节流
+# request = urllib.request.Request('http://python.org', data='')
 # response = urllib.request.urlopen(request)
 # print(response.read().decode('utf-8'))
 
-print('！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！')
+# print('！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！')
 
 
 from urllib import parse, request
-url = 'http://python.org/post'
 headers = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.92 Safari/537.36',
     'Host': 'httpbin.org'
@@ -48,9 +48,10 @@ headers = {
 dict1 = {
     'name': 'Germey'
 }
-data = bytes(parse.urlencode(dict1), encoding='utf8')
-req = request.Request(url=url, data=data, headers=headers,  method='POST')
-response = request.urlopen(req)
+data = bytes(urllib.parse.urlencode(dict1), encoding='utf8')
+req = urllib.request.Request('https://www.baidu.com', data=data, method='POST')
+req.add_header('User-Agent', 'Mozilla/4 .0 (co mpatible; MSIE 5.5; Windows NT)')
+response = urllib.request.urlopen(req)
 print(response.read().decode('utf-8'))
 
 
